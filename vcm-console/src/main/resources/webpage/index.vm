@@ -1,0 +1,40 @@
+<html>
+<head>
+<title>FlexLlink Components</title>
+<link rel="stylesheet" href="$rootPath/style.css">
+</head>
+<body bgcolor=#C0C0C0>
+<p>
+#foreach($folder in $parentFolders)
+<a href="$folder.path/index.htm">$folder.name/</a>
+#end  
+</p>
+<hr>
+
+#if ($depth > 0)
+<span class="clink">
+  <div><a href="../index.htm"><img border=0 src="$rootPath/up.jpg"></a></div>
+  <div class="cltext"><a href="../index.htm">Parent Folder</a></div>
+</span>
+#end
+
+#foreach( $folder in $folders)
+<span class="clink">
+  <div><a href="$folder.name/index.htm"><img border=0 src="$rootPath/folder.jpg"></a></div>
+  <div class="cltext"><a href="$folder.name/index.htm">$folder.name</a></div>
+</span>
+#end
+
+#foreach( $file in $files )
+<span class="clink">
+  <div><a href="$file.name"><img border=0 src="$file.thumbnailName" alt="Component: $esc.html($file.componentData.name)
+Type: $esc.html($file.componentData.keywords["Type"])
+Manufacturer: $file.componentData.keywords["Manufacturer"]
+Revision: $file.componentData.revision
+Modified: $file.lastModified
+Size: $file.fileSize"></a></div>
+  <div class="cltext"><a href="$file.name">$file.componentData.name</a></div>
+</span>
+#end
+</body>
+</html>

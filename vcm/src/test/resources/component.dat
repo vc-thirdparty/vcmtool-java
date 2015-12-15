@@ -1,0 +1,28 @@
+VcId "421fb14f-42c4-4b66-9a19-8d1ed0fce9d7"
+Revision 90
+DetailedRevision "2012.1.2.48"
+Tags "ACME;X85;Conveyors"
+KeywordMap
+{
+  Keyword
+  {
+    Key "Manufacturer"
+    Value "ACME"
+  }
+  Keyword
+  {
+    Key "Type"
+    Value "Conveyors"
+  }
+}
+Items
+{
+  Item
+  {
+    Name "Idler"
+    Icon "component_icon.tga"
+    PreviewIcon "component_preview_icon.tga"
+    Description "Idler X85"
+    Uri "component.rsc"
+  }
+}

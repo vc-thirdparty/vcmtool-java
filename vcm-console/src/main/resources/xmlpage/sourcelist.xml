@@ -1,0 +1,20 @@
+<sourceList xmlns="http://schemas.visualcomponents.com/2013/02/ecatalogue/sourcelist">
+	<name>$author source list</name>
+	<source sourceId="$guid">
+		<name>$name</name>
+		<description>$description</description>
+		<author>$author</author>
+		<index>
+			<url>$baseURL/components.xml</url>
+		</index>
+		<!--
+		Uncomment this to use any image 
+		<icon>
+			<url>$baseURL/IMAGE.jpg</url>
+		</icon>
+		-->
+		<isEnabledByDefault>true</isEnabledByDefault>
+        <isOfflineByDefault>true</isOfflineByDefault>
+		<totalSize>$totalSize</totalSize>
+	</source>
+</sourceList>

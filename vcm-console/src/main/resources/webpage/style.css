@@ -1,0 +1,42 @@
+body {
+      background-color:#FFFFFF;
+}
+p {  	border: #999999 thin solid;
+   background-color: #F7F7F7;
+   font-family: Verdana, Arial, Helvetica, sans-serif;
+   font-size: 10pt;
+   text-decoration: none;
+   color: #003399;
+   text-align: left;
+   text-indent: 2pt;
+   line-height: 0.4cm;
+   font-weight: thin;
+   margin-top: 1px;
+   margin-bottom: 1px;
+   padding-top: 1px;
+   padding-bottom: 1px;
+}
+
+.clink { height: 160px;
+  width: 120px; }
+
+.cltext { width: 110px;
+    text-align: center; }
+
+a:link {  	font-family: Verdana, Arial, Helvetica, sans-serif;
+	 	font-size: 10pt;
+	 	font-weight: thin;
+	 	text-decoration: none;
+		font-style: normal;
+		color: #000000
+	 }
+
+a:visited {  font-family: Verdana, Arial, Helvetica, sans-serif;
+	 	font-size: 10pt;
+	 	font-weight: thin;
+	 	text-decoration: none;
+		font-style: normal;
+		color: #000000
+          }
+
+a:hover {  color: #003399}

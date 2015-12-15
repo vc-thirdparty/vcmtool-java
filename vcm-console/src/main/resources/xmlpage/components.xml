@@ -1,0 +1,25 @@
+<Components Version="4.0">
+#foreach( $file in $files )
+	<VcmComponent>
+		<ModelType>$file.modelType</ModelType>
+		<Name>$!esc.xml($file.componentData.name)</Name>
+		<Description>$!esc.xml($file.componentData.description)</Description>
+		<Type>$!esc.xml($file.componentData.keywords["Type"])</Type>
+		<Manufacturer>$!file.componentData.keywords["Manufacturer"]</Manufacturer>
+		<MaxPayLoad/>
+		<Author>$author</Author>
+		<Email>$!file.componentData.keywords["Email"]</Email>
+		<Website>$ecaturl</Website>
+		<DetailedRevision>$!file.componentData.values["DetailedRevision"]</DetailedRevision>
+		<Revision>$!file.componentData.revision</Revision>
+		<VcId>$!file.componentData.values["VcId"]</VcId>
+		<Tags>$!file.componentData.values["Tags"]</Tags>
+		<File>$!baseURL$file.relativePath$file.name</File>
+		<Icon>$!baseURL$file.relativePath$file.thumbnailName</Icon>
+		<PreviewIcon>$!baseURL$file.relativePath$file.thumbnailName</PreviewIcon>
+		<DateModified>$!file.lastModifiedStr</DateModified>
+		<FileSize>$!file.fileSize</FileSize>
+		<IsDeprecated>$file.isDeprecated</IsDeprecated>
+	</VcmComponent>
+#end
+</Components>
