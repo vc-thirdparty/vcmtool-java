@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.github.redsolo.vcm.ModelResource;
+import com.github.redsolo.vcm.model.Feature;
 
 public class ResourceDataParser {
 
@@ -86,5 +87,17 @@ public class ResourceDataParser {
             }
         }
         return null;
+    }
+
+    public static List<Feature> getFeatures(ModelResource root, String type) {
+        List<Feature> features = new ArrayList<Feature>();
+        for (ModelResource modelResource : root.getResources()) {
+
+            if (modelResource.getType().equals("Feature") && modelResource.getName().equals(type)) {
+                features.add(new Feature(modelResource));
+            }
+            features.addAll(getFeatures(modelResource, type));
+        }
+        return features;
     }
 }
