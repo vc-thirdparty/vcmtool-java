@@ -37,8 +37,7 @@
 		<connection>scm:git:git@github.com:redsolo/vcmtool-java.git</connection>
 		<developerConnection>scm:git:git@github.com:redsolo/vcmtool-java.git</developerConnection>
 		<url>git@github.com:redsolo/vcmtool-java.git</url>
-	  <tag>parent-1.0.0</tag>
-  </scm>
+	</scm>
 
 	<developers>
 		<developer>
