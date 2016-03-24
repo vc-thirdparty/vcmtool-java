@@ -4,7 +4,7 @@
 	<parent>
 		<groupId>com.github.redsolo.vcmtool</groupId>
 		<artifactId>parent</artifactId>
-		<version>1.0.4-SNAPSHOT</version>
+		<version>1.0.4</version>
 		<relativePath>../pom.xml</relativePath>
 	</parent>
 
