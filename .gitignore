@@ -39,3 +39,4 @@ Thumbs.db
 *.project
 *.settings/
 *target/
+*.orig
