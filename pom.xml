@@ -24,6 +24,7 @@
 
 	<name>VCM Tool</name>
 	<description>Tool to handle Visual Components VCM files</description>
+	<url>https://github.com/redsolo/vcmtool-java.git</url>
 
 	<modules>
 		<module>vcm</module>
