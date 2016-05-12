@@ -2,6 +2,7 @@ package com.github.redsolo.vcm;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Comparator;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Level;
@@ -48,12 +49,17 @@ public class App {
         commands.add(new ListNodesCommand());
 	}
 
+	public void addCommand(Command command) {
+		commands.add(command);
+	}
+
 	private Command getCommand(String[] args, JCommander commander, MainConfiguration configuration) {
 		commander.setProgramName(PROGRAM_NAME);
 
 		HelpCommand helpCommand = new HelpCommand(commander);
 		commander.addCommand(helpCommand.getName(), helpCommand);
-		
+
+		commands.sort(new CommandSorter());
 		for (Command command : commands) {
 			commander.addCommand(command.getName(), command);
 		}
@@ -142,5 +148,12 @@ public class App {
 	
 	public static void main(String[] args) {
 		System.exit(new App().parseCommands(args));
+	}
+
+	private static class CommandSorter implements Comparator<Command> {
+		@Override
+		public int compare(Command arg0, Command arg1) {
+			return arg0.getName().compareTo(arg1.getName());
+		}
 	}
 }
