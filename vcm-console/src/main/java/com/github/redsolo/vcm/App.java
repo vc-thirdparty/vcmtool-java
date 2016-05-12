@@ -25,6 +25,7 @@ public class App {
 		commands.add(new GenerateWebCatalogCommand());
 		commands.add(new GrepDataCommand());
 		commands.add(new ImportFilesCommand());
+		commands.add(new CreatePropertyCommand());
 		commands.add(new ModifyTagsCommand());
 		commands.add(new ModifyKeyWordsCommand());
 		commands.add(new ModifyPropertiesCommand());
@@ -46,7 +47,7 @@ public class App {
         commands.add(new ExportFilesCommand());
         commands.add(new ListNodesCommand());
 	}
-	
+
 	private Command getCommand(String[] args, JCommander commander, MainConfiguration configuration) {
 		commander.setProgramName(PROGRAM_NAME);
 
