@@ -40,6 +40,7 @@ public class App {
 		commands.add(new VerifyKeyWordsCommand());
 		commands.add(new VerifyPropertyNamesCommand());
 		commands.add(new VerifyZeroPositionCommand());
+		commands.add(new VerifyPythonCommand());
 		commands.add(new VerifyOnDemandLoadIsEnabledCommand());
         commands.add(new SearchTextInResourceCommand());
         commands.add(new ReplaceTextInResourceCommand());
