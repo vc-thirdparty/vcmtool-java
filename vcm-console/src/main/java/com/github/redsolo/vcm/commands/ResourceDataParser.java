@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.github.redsolo.vcm.ModelResource;
 import com.github.redsolo.vcm.model.Feature;
+import org.apache.commons.lang3.StringUtils;
 
 public class ResourceDataParser {
 
@@ -93,7 +94,7 @@ public class ResourceDataParser {
         List<Feature> features = new ArrayList<Feature>();
         for (ModelResource modelResource : root.getResources()) {
 
-            if (modelResource.getType().equals("Feature") && modelResource.getName().equals(type)) {
+            if (modelResource.getType().equals("Feature") && (StringUtils.isEmpty(type) || modelResource.getName().equals(type))) {
                 features.add(new Feature(modelResource));
             }
             features.addAll(getFeatures(modelResource, type));

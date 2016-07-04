@@ -15,6 +15,7 @@ import org.apache.commons.io.filefilter.FileFilterUtils;
 import org.apache.commons.io.filefilter.IOFileFilter;
 import org.apache.commons.io.filefilter.TrueFileFilter;
 import org.apache.commons.io.filefilter.WildcardFileFilter;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 
 import com.beust.jcommander.Parameter;
@@ -186,5 +187,9 @@ public abstract class AbstractModelCollectionCommand implements Command {
 		}
 
 		return highestGroupIndex + 1;
+	}
+
+	protected String getRelativePath(File file) {
+		return String.format(".%s", StringUtils.remove(file.getAbsolutePath(), new File(componentRootPath).getAbsolutePath()));
 	}
 }

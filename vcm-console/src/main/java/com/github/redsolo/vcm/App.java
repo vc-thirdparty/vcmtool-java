@@ -47,7 +47,8 @@ public class App {
         commands.add(new ReplaceSnippetInResourceCommand());
         commands.add(new BatchUpdateCommand());
         commands.add(new ExportFilesCommand());
-        commands.add(new ListNodesCommand());
+		commands.add(new ListNodesCommand());
+		commands.add(new ListFeaturesCommand());
 	}
 
 	public void addCommand(Command command) {

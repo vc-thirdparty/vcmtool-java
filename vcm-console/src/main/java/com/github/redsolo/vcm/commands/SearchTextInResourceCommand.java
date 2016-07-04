@@ -40,7 +40,7 @@ public class SearchTextInResourceCommand extends AbstractModelCollectionCommand 
 		log.debug("Reading from " + model.getFile());
 		InputStream inputStream = model.getInputStream(Model.COMPONENT_RSC);
 		try {
-			displayLines(readLinesFromModel(inputStream), StringUtils.remove(model.getFile().getAbsolutePath(), getComponentRootPath()).substring(1));
+			displayLines(readLinesFromModel(inputStream), getRelativePath(model.getFile()));
 		} finally {
 			IOUtils.closeQuietly(inputStream);
 		}
