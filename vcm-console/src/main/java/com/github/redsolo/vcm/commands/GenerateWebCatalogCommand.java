@@ -236,7 +236,10 @@ public class GenerateWebCatalogCommand extends DirectoryWalker<VcmFileData> impl
 
 	private List<VcmFileData> getFiles(File directory, String outputPath) throws IOException, ZipException {
 		ArrayList<VcmFileData> list = new ArrayList<VcmFileData>();
-		for (File file : directory.listFiles((FileFilter) FileFilterUtils.suffixFileFilter("vcm", IOCase.INSENSITIVE))) {
+		for (File file : directory.listFiles((FileFilter)
+				FileFilterUtils.or(
+						FileFilterUtils.suffixFileFilter("vcm", IOCase.INSENSITIVE),
+						FileFilterUtils.suffixFileFilter("vcmx", IOCase.INSENSITIVE)))) {
 			log.debug(String.format("Opening %s", file.getCanonicalPath()));
 			File destFile = new File(outputPath, file.getName());
 			String relativePath = destFile.getCanonicalPath().substring(new File(outputRootPath).getCanonicalPath().length() + 1);
