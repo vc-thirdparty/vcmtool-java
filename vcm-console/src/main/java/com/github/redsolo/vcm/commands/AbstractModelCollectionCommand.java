@@ -28,7 +28,7 @@ public abstract class AbstractModelCollectionCommand implements Command {
 	@Parameter(description = "recursive", names = {"-R"})
 	private boolean recursive = false;
 
-	@Parameter(description = "wildcards (defaults to *.vcm)")
+	@Parameter(description = "wildcards (defaults to *.vcm*)")
 	private List<String> wildcards;
 
 	@Parameter(description = "component path (default is current path)", names = {"-i", "--inputPath"})
@@ -55,7 +55,7 @@ public abstract class AbstractModelCollectionCommand implements Command {
 	protected Collection<Model> getModels() throws ZipException {
 		IOFileFilter fileFilter;
 		if (wildcards == null) {
-			fileFilter = new WildcardFileFilter("*.vcm", IOCase.INSENSITIVE);
+			fileFilter = new WildcardFileFilter("*.vcm*", IOCase.INSENSITIVE);
 		} else {
 			ArrayList<IOFileFilter> fileFilters = new ArrayList<IOFileFilter>();
 			for (String filename : wildcards) {
