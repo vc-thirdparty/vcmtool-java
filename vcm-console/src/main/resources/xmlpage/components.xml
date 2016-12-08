@@ -1,4 +1,4 @@
-<Components Version="4.0">
+<Components Version="4.0" Count="$files.size()">
 #foreach( $file in $files )
 	<VcmComponent>
 		<ModelType>$file.modelType</ModelType>
