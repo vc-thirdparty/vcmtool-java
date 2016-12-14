@@ -52,9 +52,12 @@ public class GenerateWebCatalogCommand extends DirectoryWalker<VcmFileData> impl
 
 	@Parameter(description="velocity index.html template path", names={"--html-template"})
 	private String templatePath;
-	
-	@Parameter(description="velocity components.xml template path", names={"--xml-template"})
+
+	@Parameter(description="velocity components.xml template path", names={"--xml-components-template"})
 	private String componentsTemplatePath;
+
+	@Parameter(description="velocity sourcelist.xml template path", names={"--xml-sourcelist-template"})
+	private String sourcelistTemplatePath;
 
 	@Parameter(description="thumbnail width", names={"-tw", "--thumbnailWidth"})
 	private int thumbnailWidth = 96;
@@ -107,14 +110,19 @@ public class GenerateWebCatalogCommand extends DirectoryWalker<VcmFileData> impl
 		}
 
 		if (componentsTemplatePath == null) {
-			velocityComponentsTemplate = velocityEngine.getTemplate("xmlpage/components.xml" );
+			velocityComponentsTemplate = velocityEngine.getTemplate("xmlpage/components.xml");
 		} else {
 			velocityEngine.init();
 			velocityComponentsTemplate = velocityEngine.getTemplate(componentsTemplatePath);
 		}
-		
-		velocitySourceListTemplate = velocityEngine.getTemplate("xmlpage/sourcelist.xml" );
-		
+
+		if (sourcelistTemplatePath == null) {
+			velocitySourceListTemplate = velocityEngine.getTemplate("xmlpage/sourcelist.xml");
+		} else {
+			velocityEngine.init();
+			velocitySourceListTemplate = velocityEngine.getTemplate(sourcelistTemplatePath);
+		}
+
 		List<VcmFileData> result = new ArrayList<VcmFileData>();
 		try {
 			outputRootFile = new File(outputRootPath);
