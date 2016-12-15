@@ -50,13 +50,16 @@ public class GenerateWebCatalogCommand extends DirectoryWalker<VcmFileData> impl
 	@Parameter(description="output path (default is current path)", names={"-o", "--outputPath"})
 	private String outputRootPath = System.getProperty("user.dir");
 
-	@Parameter(description="velocity index.html template path", names={"--html-template"})
+	@Parameter(description="velocity template path (comma separated list)", names={"--template-paths"})
+	private String velocityrTemplateDirectory = System.getProperty("user.dir");
+
+	@Parameter(description="velocity index.html template filename (in template folder)", names={"--template-html"})
 	private String templatePath;
 
-	@Parameter(description="velocity components.xml template path", names={"--xml-components-template"})
+	@Parameter(description="velocity components.xml template filename (in template folder)", names={"--template-components"})
 	private String componentsTemplatePath;
 
-	@Parameter(description="velocity sourcelist.xml template path", names={"--xml-sourcelist-template"})
+	@Parameter(description="velocity sourcelist.xml template filename (in template folder)", names={"--template-sourcelist"})
 	private String sourcelistTemplatePath;
 
 	@Parameter(description="thumbnail width", names={"-tw", "--thumbnailWidth"})
@@ -95,8 +98,12 @@ public class GenerateWebCatalogCommand extends DirectoryWalker<VcmFileData> impl
 	@Override
 	public int execute(MainConfiguration configuration) {
 		VelocityEngine velocityEngine = new VelocityEngine();
-		velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath"); 
+		velocityEngine.setProperty(RuntimeConstants.RESOURCE_LOADER, "classpath,file");
 		velocityEngine.setProperty("classpath.resource.loader.class", ClasspathResourceLoader.class.getName());
+		velocityEngine.setProperty("file.resource.loader.class", org.apache.velocity.runtime.resource.loader.FileResourceLoader.class.getName());
+		velocityEngine.setProperty("file.resource.loader.cache", false);
+		velocityEngine.setProperty("file.resource.loader.path", velocityrTemplateDirectory);
+
 		velocityEngine.init();
 
 		velocityToolManager = new ToolManager();
@@ -105,21 +112,18 @@ public class GenerateWebCatalogCommand extends DirectoryWalker<VcmFileData> impl
 		if (templatePath == null) {
 			velocityTemplate = velocityEngine.getTemplate("webpage/index.vm" );
 		} else {
-			velocityEngine.init();
 			velocityTemplate = velocityEngine.getTemplate(templatePath);
 		}
 
 		if (componentsTemplatePath == null) {
 			velocityComponentsTemplate = velocityEngine.getTemplate("xmlpage/components.xml");
 		} else {
-			velocityEngine.init();
 			velocityComponentsTemplate = velocityEngine.getTemplate(componentsTemplatePath);
 		}
 
 		if (sourcelistTemplatePath == null) {
 			velocitySourceListTemplate = velocityEngine.getTemplate("xmlpage/sourcelist.xml");
 		} else {
-			velocityEngine.init();
 			velocitySourceListTemplate = velocityEngine.getTemplate(sourcelistTemplatePath);
 		}
 
