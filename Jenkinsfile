@@ -21,7 +21,7 @@ pipeline {
       steps {
         echo 'Building'
         unstash 'ws'
-        bat './mvnw -B -DskipTests=true clean compile package'
+        sh './mvnw -B -DskipTests=true clean compile package'
         stash name: 'war', includes: 'target/**/*.war'
       }
     }
