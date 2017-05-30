@@ -36,6 +36,12 @@ public class ComponentDataTest {
 		ComponentData componentData = new ComponentData(new ModelResource().putValue("Revision", 12l));
 		assertThat(componentData.getRevision(), is((long)12));
 	}
+	
+	@Test
+	public void assertStringRevisionIsRetrieved() {
+		ComponentData componentData = new ComponentData(new ModelResource().putValue("Revision", "12"));
+		assertThat(componentData.getRevision(), is((long)12));
+	}
     
     @Test
     public void assertItemsAreRetrieved() {

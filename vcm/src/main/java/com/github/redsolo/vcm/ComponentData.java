@@ -53,7 +53,11 @@ public class ComponentData {
 	}
 
 	public long getRevision() {
-		return (Long) valuesMap.get(REVISION);
+		Object object = valuesMap.get(REVISION);
+		if (object instanceof String) {
+			return Long.parseLong((String)object);
+		}
+		return (Long) object;
 	}
 
 	public void setRevision(long newRevision) {
