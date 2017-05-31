@@ -76,6 +76,7 @@ public class VcmFileData {
 	    return modelType;
 	}
 	public boolean getIsDeprecated() {
-	    return Arrays.stream(componentData.getTags()).anyMatch(s -> s.equalsIgnoreCase("IsDeprecated"));
+	    return Arrays.stream(componentData.getTags()).anyMatch(s -> s.equalsIgnoreCase("IsDeprecated")) ||
+	    		"True".equalsIgnoreCase(componentData.getKeyword("IsDeprecated")); 
 	}
 }
