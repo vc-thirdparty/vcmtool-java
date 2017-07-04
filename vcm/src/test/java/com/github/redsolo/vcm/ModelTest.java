@@ -181,6 +181,7 @@ public class ModelTest {
     public void assertRevisionIsUpdatedWhenSavingComponentFile() throws Throwable {
         File resourceFile = getResourceFile("/Idler.vcm");
         long lastModified = resourceFile.lastModified();
+        Delay(1000);
         
         Model vcm = new Model(resourceFile);
         ComponentData componentData = vcm.getComponentData();
@@ -208,5 +209,13 @@ public class ModelTest {
         assertThat(newVcm.getComponentData().getRevision(), is(48l));
         assertThat(resourceFile.lastModified(), is(greaterThan(lastModified)));
         assertThat(vcm.getLastModifiedTime("component.dat"), is(greaterThan(1369222058000l)));
+    }
+    
+    private void Delay(long millis){
+    	try {
+			Thread.sleep(millis);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
     }
 }
