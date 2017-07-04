@@ -14,11 +14,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.github.redsolo.vcm.ComponentData;
@@ -28,6 +30,11 @@ import com.github.redsolo.vcm.ModelResource;
 @SuppressWarnings("unchecked")
 public class ModelTest {
 
+	@Before
+	public void setUp() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Stockholm"));
+	}
+	
 	public static File getResourceFile() throws IOException {
 		return getResourceFile("/Idler.vcm");
 	}
