@@ -6,8 +6,10 @@ import static org.junit.Assert.assertThat;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.util.TimeZone;
 
 import org.apache.commons.io.FileUtils;
+import org.junit.Before;
 import org.junit.Test;
 
 import com.github.redsolo.vcm.ComponentData;
@@ -17,6 +19,11 @@ import com.github.redsolo.vcm.util.VcmFileUpdater;
 
 public class VcmFileUpdaterTest {
 
+	@Before
+	public void setUp() {
+		TimeZone.setDefault(TimeZone.getTimeZone("Europe/Stockholm"));
+	}
+	
 	@Test
 	public void assertFilesAreAddedToVcm() throws Throwable {
 		File vcmFile = ModelTest.getResourceFile();
