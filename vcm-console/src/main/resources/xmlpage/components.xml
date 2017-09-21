@@ -14,9 +14,9 @@
 		<Revision>$!file.componentData.revision</Revision>
 		<VcId>$!file.componentData.values["VcId"]</VcId>
 		<Tags>$!esc.xml($!file.componentData.values["Tags"])</Tags>
-		<File>$!esc.xml($!baseURL)$esc.xml($file.relativePath)$esc.xml($file.name)</File>
-		<Icon>$!esc.xml($!baseURL)$esc.xml($file.relativePath)$esc.xml($file.thumbnailName)</Icon>
-		<PreviewIcon>$!esc.xml($!baseURL)$esc.xml($file.relativePath)$esc.xml($file.thumbnailName)</PreviewIcon>
+		<File>$esc.xml($!baseURL)$esc.xml($file.relativePath)$esc.xml($file.name)</File>
+		<Icon>$esc.xml($!baseURL)$esc.xml($file.relativePath)$esc.xml($file.thumbnailName)</Icon>
+		<PreviewIcon>$esc.xml($!baseURL)$esc.xml($file.relativePath)$esc.xml($file.thumbnailName)</PreviewIcon>
 		<DateModified>$!file.lastModifiedStr</DateModified>
 		<FileSize>$!file.fileSize</FileSize>
 		<IsDeprecated>$file.isDeprecated</IsDeprecated>
