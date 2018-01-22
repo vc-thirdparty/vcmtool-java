@@ -7,9 +7,13 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
 
 public class TestUtil {
-	
+
 	public static File getResourceFile(File root) throws IOException {
 		return getResourceFile(root, "/Idler.vcm");
+	}
+	
+	public static File getVcmxResourceFile(File root) throws IOException {
+		return getResourceFile(root, "/Idler.vcmx");
 	}
 	
 	public static File getResourceFile(File root, String string) throws IOException {

@@ -10,6 +10,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.github.redsolo.vcm.Model;
+import com.github.redsolo.vcm.RawValue;
 import com.github.redsolo.vcm.commands.MainConfiguration;
 import com.github.redsolo.vcm.commands.ModifyVcidCommand;
 import com.github.redsolo.vcm.util.TestUtil;
@@ -32,5 +33,23 @@ public class ModifyVcidCommandTest {
 		assertThat((String)model.getResourceData().getResource("Node").getResource("NodeClass").getValue("VCID"), 
 				is(expectedVcid));
 		assertThat(model.getComponentData().getRevision(), is(49l));
+	}
+	
+	@Test
+	public void assertVcidIsUpdatedInVcmx() throws Throwable {
+		File file = TestUtil.getVcmxResourceFile(folder.getRoot());
+		ModifyVcidCommand command = new ModifyVcidCommand();
+		String expectedVcid = "19a08d4c-fd77-4fe8-8f61-a6eb4189f521";
+		command.setNewVcid(expectedVcid);
+		command.setComponentRootPath(file.getParentFile().getCanonicalPath());
+		command.execute(new MainConfiguration());
+		
+		Model model = new Model(file);
+		assertThat(model.getComponentData().getVcId(), is(expectedVcid));
+		assertThat((String)model.getResourceData().getResource("Node").getResource("NodeClass").getValue("VCID"), 
+				is(expectedVcid));
+		assertThat((RawValue)model.getResourceData().getResource("Node").getValue("VCID"), 
+				is(new RawValue(expectedVcid)));
+		assertThat(model.getComponentData().getRevision(), is(201L));
 	}
 }

@@ -11,6 +11,7 @@ import com.beust.jcommander.Parameters;
 import com.github.redsolo.vcm.ComponentData;
 import com.github.redsolo.vcm.Model;
 import com.github.redsolo.vcm.ModelResource;
+import com.github.redsolo.vcm.RawValue;
 
 @Parameters(commandDescription = "List or modifies VCID (component.dat, component.rsc)")
 public class ModifyVcidCommand extends AbstractModelCollectionCommand {
@@ -32,6 +33,7 @@ public class ModifyVcidCommand extends AbstractModelCollectionCommand {
 			
 			componentData.setVcid(newVcid);
 			resourceData.getResource("Node").getResource("NodeClass").setValue("VCID", newVcid);
+			resourceData.getResource("Node").setValue("VCID", new RawValue(newVcid));
 
 			if (model.setResourceData(resourceData, false) && model.setComponentData(componentData, false)) {
 			    if (!skipRevisionUpdate) {
