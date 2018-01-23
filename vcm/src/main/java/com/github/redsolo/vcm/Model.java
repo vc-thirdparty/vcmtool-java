@@ -11,15 +11,26 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.FileHeader;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.TransformerFactoryConfigurationError;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.log4j.Logger;
+import org.w3c.dom.Document;
+import org.xml.sax.SAXException;
 
 import com.github.redsolo.vcm.util.DosTimeToEpochConverter;
 import com.github.redsolo.vcm.util.VcmFileUpdater;
+
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
+import net.lingala.zip4j.model.FileHeader;
 
 public class Model {
     public static final String COMPONENT_RSC = "component.rsc";
@@ -30,10 +41,16 @@ public class Model {
     
     private final long zipFileLastModified;
 	private ZipFile zipFile;
+	
 	private ComponentData componentData;
 	private long componentDataHashcode;
+	
 	private ModelResource resourceData;
 	private long resourceDataHashcode;
+	
+	private ComponentModel componentModel;
+	private TransformerFactory transformerFactory;
+	private DocumentBuilderFactory documentBuilderFactory;
 
 	public Model(File file) throws ZipException {
 		zipFile = new ZipFile(file);
@@ -59,7 +76,11 @@ public class Model {
 	
 	public InputStream getInputStream(String filename) throws ZipException {
 	    log.trace(String.format("Opening input stream to %s", filename));
-		return zipFile.getInputStream(zipFile.getFileHeader(filename));
+		FileHeader fileHeader = zipFile.getFileHeader(filename);
+		if (fileHeader == null) {
+			return null;
+		}
+		return zipFile.getInputStream(fileHeader);
 	}
 	
 	public OutputStream getOutputStream(String filename) throws ZipException {
@@ -118,6 +139,49 @@ public class Model {
 		}
 		return false;
 	}
+
+	public ComponentModel getComponentModel() throws ZipException, IOException {
+		if (componentModel == null) {
+			InputStream stream = null;
+			try {
+				stream = getInputStream("model.xml");
+				if (stream != null) {
+					Document document = getDocumentBuilderFactory().newDocumentBuilder().parse(stream);
+					componentModel = new ComponentModel(document);					
+				}
+			} catch (SAXException | ParserConfigurationException e) {
+				throw new IOException("Problem loading Model.xml", e);
+			} finally {
+				IOUtils.closeQuietly(stream);
+			}
+		}
+		return componentModel;
+	}
+	
+	public boolean setComponentModel(ComponentModel newModel, boolean stepRevision) throws ZipException, IOException {
+		if (newModel == null) return false;
+		if (newModel.isChanged()) 
+		{
+			this.componentModel = newModel;
+			if (stepRevision) {
+				stepRevision();
+			}
+			OutputStream stream = null;
+			try {
+				stream = getOutputStream("model.xml");				
+				TransformerFactory transformerFactory = getTransformerFactory();
+				Transformer xformer = transformerFactory.newTransformer();
+			    xformer.transform(new DOMSource(componentModel.getDocument()), new StreamResult(stream));
+			} catch (TransformerFactoryConfigurationError | TransformerException e) {
+				throw new IOException("Problem saving Model.xml", e);
+			} finally {
+				IOUtils.closeQuietly(stream);
+			}
+			componentModel.setChanged(false);
+			return true;
+		}
+		return false;
+	}
 	
 	public long getLastModifiedTime(String filename) throws ZipException {	    
 	    return DosTimeToEpochConverter.convert(zipFile.getFileHeader(filename).getLastModFileTime());
@@ -167,4 +231,17 @@ public class Model {
         componentDataHashcode = componentData.hashCode();
         writeFileAsResource(COMPONENT_DAT, componentData.getResource(), true);
     }
+
+	private TransformerFactory getTransformerFactory() throws TransformerFactoryConfigurationError {
+		if (transformerFactory == null) {
+			transformerFactory = TransformerFactory.newInstance();
+		}
+		return transformerFactory;
+	}
+	private DocumentBuilderFactory getDocumentBuilderFactory() {
+		if (documentBuilderFactory == null) {
+			documentBuilderFactory = DocumentBuilderFactory.newInstance();
+		}
+		return documentBuilderFactory;
+	}
 }

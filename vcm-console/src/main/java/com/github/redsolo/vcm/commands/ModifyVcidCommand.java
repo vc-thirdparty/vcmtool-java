@@ -4,14 +4,15 @@ import java.io.IOException;
 
 import org.apache.log4j.Logger;
 
-import net.lingala.zip4j.exception.ZipException;
-
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.github.redsolo.vcm.ComponentData;
+import com.github.redsolo.vcm.ComponentModel;
 import com.github.redsolo.vcm.Model;
 import com.github.redsolo.vcm.ModelResource;
 import com.github.redsolo.vcm.RawValue;
+
+import net.lingala.zip4j.exception.ZipException;
 
 @Parameters(commandDescription = "List or modifies VCID (component.dat, component.rsc)")
 public class ModifyVcidCommand extends AbstractModelCollectionCommand {
@@ -30,12 +31,18 @@ public class ModifyVcidCommand extends AbstractModelCollectionCommand {
 		if (newVcid != null) {
 			ComponentData componentData = model.getComponentData();
 			ModelResource resourceData = model.getResourceData();
+			ComponentModel componentModel = model.getComponentModel();
 			
 			componentData.setVcid(newVcid);
 			resourceData.getResource("Node").getResource("NodeClass").setValue("VCID", newVcid);
 			resourceData.getResource("Node").setValue("VCID", new RawValue(newVcid));
-
-			if (model.setResourceData(resourceData, false) && model.setComponentData(componentData, false)) {
+			if (componentModel != null) {
+				componentModel.setVcid(newVcid);
+			}
+			
+			if (model.setResourceData(resourceData, false) 
+					|| model.setComponentData(componentData, false)
+					|| model.setComponentModel(componentModel, false)) {
 			    if (!skipRevisionUpdate) {
 			        model.stepRevision();
 			    }

@@ -178,6 +178,26 @@ public class ModelTest {
     }
     
     @Test
+    public void assertModelFileCanBeUpdated() throws Throwable {
+        File resourceFile = getResourceFile("/Idler.vcmx");
+        Model vcm = new Model(resourceFile);
+        ComponentModel model = vcm.getComponentModel();
+        assertThat(model.getVcid(), is("421fb14f-42c4-4b66-9a19-8d1ed0fce9d7"));
+        model.setVcid("196f9842-f467-4c2c-b60a-2138737f5b3e");
+        assertThat(vcm.setComponentModel(model, false), is(true));
+        assertThat(new Model(resourceFile).getComponentModel().getVcid(), is("196f9842-f467-4c2c-b60a-2138737f5b3e"));
+    }
+    
+    @Test
+    public void assertModelFileCanBeReadFromOldFileType() throws Throwable {
+        File resourceFile = getResourceFile("/Idler.vcm");
+        Model vcm = new Model(resourceFile);
+        ComponentModel model = vcm.getComponentModel();
+        assertThat(model, is(nullValue()));
+        assertThat(vcm.setComponentModel(model, false), is(false));
+    }
+    
+    @Test
     public void assertRevisionIsUpdatedWhenSavingComponentFile() throws Throwable {
         File resourceFile = getResourceFile("/Idler.vcm");
         long lastModified = resourceFile.lastModified();
