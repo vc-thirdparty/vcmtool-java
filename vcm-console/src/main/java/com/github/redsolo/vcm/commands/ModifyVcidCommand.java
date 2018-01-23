@@ -40,9 +40,10 @@ public class ModifyVcidCommand extends AbstractModelCollectionCommand {
 				componentModel.setVcid(newVcid);
 			}
 			
-			if (model.setResourceData(resourceData, false) 
-					|| model.setComponentData(componentData, false)
-					|| model.setComponentModel(componentModel, false)) {
+			boolean wasUpdated = model.setResourceData(resourceData, false);
+			wasUpdated = model.setComponentData(componentData, false) || wasUpdated;
+			wasUpdated = model.setComponentModel(componentModel, false) || wasUpdated; 
+			if (wasUpdated) {
 			    if (!skipRevisionUpdate) {
 			        model.stepRevision();
 			    }
