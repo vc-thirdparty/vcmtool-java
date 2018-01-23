@@ -35,6 +35,7 @@ import net.lingala.zip4j.model.FileHeader;
 public class Model {
     public static final String COMPONENT_RSC = "component.rsc";
     public static final String COMPONENT_DAT = "component.dat";
+    public static final String MODEL_XML = "model.xml";
     public static final String LAYOUT_RSC = "layout.rsc";
 
     private static Logger log = Logger.getLogger(Model.class);
@@ -144,7 +145,7 @@ public class Model {
 		if (componentModel == null) {
 			InputStream stream = null;
 			try {
-				stream = getInputStream("model.xml");
+				stream = getInputStream(MODEL_XML);
 				if (stream != null) {
 					Document document = getDocumentBuilderFactory().newDocumentBuilder().parse(stream);
 					componentModel = new ComponentModel(document);					
@@ -168,7 +169,7 @@ public class Model {
 			}
 			OutputStream stream = null;
 			try {
-				stream = getOutputStream("model.xml");				
+				stream = getOutputStream(MODEL_XML);				
 				TransformerFactory transformerFactory = getTransformerFactory();
 				Transformer xformer = transformerFactory.newTransformer();
 			    xformer.transform(new DOMSource(componentModel.getDocument()), new StreamResult(stream));
