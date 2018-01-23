@@ -9,8 +9,6 @@ import java.io.OutputStream;
 import java.io.Writer;
 import java.util.List;
 
-import net.lingala.zip4j.exception.ZipException;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +20,8 @@ import com.github.redsolo.vcm.Model;
 import com.github.redsolo.vcm.ModelResource;
 import com.github.redsolo.vcm.ModelResourceParser;
 import com.github.redsolo.vcm.ModelResourceWriter;
+
+import net.lingala.zip4j.exception.ZipException;
 
 @Parameters(commandDescription = "Export files from VCM")
 public class ExportFilesCommand implements Command {
@@ -60,6 +60,10 @@ public class ExportFilesCommand implements Command {
                 try {
 
                     input = model.getInputStream(filenames.get(i));
+                    if (input == null) {
+                    	log.error(String.format("No such file named '%s' in model file", filenames.get(i)));
+                    	return 2;
+                    }
                     output = new FileOutputStream(outputFile);
                     log.debug(String.format("Exporting '%s' as '%s'", filenames.get(i), outputFile));
                     IOUtils.copy(input, output);
