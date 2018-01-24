@@ -24,6 +24,13 @@ public class ComponentModel {
 	public void setVcid(String vcid) {
 		setPropertyValue("VCID", vcid);
 	}
+
+	public String getDetailedRevision() {
+		return getPropertyValue("DetailedRevision");
+	}
+	public void setDetailedRevision(String revision) {
+		setPropertyValue("DetailedRevision", revision);
+	}
 	
 	public String[] getTags() {
 		return StringUtils.split(getPropertyValue("Tags"), ';');

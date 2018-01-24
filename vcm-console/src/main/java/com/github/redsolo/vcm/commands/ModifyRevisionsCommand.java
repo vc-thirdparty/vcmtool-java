@@ -13,6 +13,7 @@ import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParameterException;
 import com.beust.jcommander.Parameters;
 import com.github.redsolo.vcm.ComponentData;
+import com.github.redsolo.vcm.ComponentModel;
 import com.github.redsolo.vcm.Model;
 
 @Parameters(commandDescription = "List or modifies detailed revision (component.dat)")
@@ -53,6 +54,12 @@ public class ModifyRevisionsCommand extends AbstractModelCollectionCommand imple
 			String newRevision = getNewRevision((String)componentData.getValues().get("DetailedRevision")); 
 			componentData.getValues().put("DetailedRevision", newRevision);
 			model.setComponentData(componentData, false);
+			
+			ComponentModel componentModel = model.getComponentModel();
+			if (componentModel != null) {
+				componentModel.setDetailedRevision(newRevision);
+			}
+			model.setComponentModel(componentModel, false);
 		}
 		log.info(String.format("%s: %s", model.getFile(), componentData.getValues().get("DetailedRevision")));
 	}
