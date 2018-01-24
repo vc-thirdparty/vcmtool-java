@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.github.redsolo.vcm.ComponentData;
+import com.github.redsolo.vcm.ComponentModel;
 import com.github.redsolo.vcm.Model;
 import com.github.redsolo.vcm.commands.MainConfiguration;
 import com.github.redsolo.vcm.commands.ModifyKeyWordsCommand;
@@ -34,6 +35,18 @@ public class ModifyKeyWordsCommandTest {
 	}
 	
 	@Test
+	public void assertKeyWordsAreAddedInNextGenFile() throws Throwable {
+		File file = TestUtil.getVcmxResourceFile(folder.getRoot());
+		ModifyKeyWordsCommand command = new ModifyKeyWordsCommand();
+		command.setAddKeywords("newkey=newvalue,otherkey=value");
+		command.setComponentRootPath(file.getParentFile().getCanonicalPath());
+		command.execute(new MainConfiguration());
+		
+		ComponentModel componentModel = new Model(file).getComponentModel();
+		assertThat(componentModel.getProperties(), hasEntry("newkey", "newvalue"));
+	}
+	
+	@Test
 	public void assertKeyWordsAreRemoved() throws Throwable {
 		File file = TestUtil.getResourceFile(folder.getRoot());
 		ModifyKeyWordsCommand command = new ModifyKeyWordsCommand();
@@ -43,5 +56,17 @@ public class ModifyKeyWordsCommandTest {
 		
 		ComponentData componentData = new Model(file).getComponentData();
 		assertThat(componentData.getKeywords(), not(hasEntry("Manufacturer", "ACME")));
+	}
+	
+	@Test
+	public void assertKeyWordsAreRemovedInNextGenFile() throws Throwable {
+		File file = TestUtil.getVcmxResourceFile(folder.getRoot());
+		ModifyKeyWordsCommand command = new ModifyKeyWordsCommand();
+		command.setRemoveKeywords("Manufacturer");
+		command.setComponentRootPath(file.getParentFile().getCanonicalPath());
+		command.execute(new MainConfiguration());
+
+		ComponentModel componentModel = new Model(file).getComponentModel();
+		assertThat(componentModel.getProperties(), not(hasEntry("Manufacturer", "ACME")));
 	}
 }

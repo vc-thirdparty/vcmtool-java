@@ -1,5 +1,8 @@
 package com.github.redsolo.vcm;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -16,6 +19,16 @@ public class ComponentModel {
 
 	public Document getDocument() {
 		return document;
+	}
+
+	public Map<String, String> getProperties() {
+		HashMap<String, String> map = new HashMap<String,String>();
+		NodeList list = getElement("Properties").getElementsByTagName("Property");
+		for (int i = 0; i < list.getLength(); i++) {
+			Element element = (Element) list.item(i);
+			map.put(element.getAttribute("name"), element.getTextContent());
+		}
+		return map;
 	}
 	
 	public String getVcid() {
@@ -105,11 +118,11 @@ public class ComponentModel {
 		}
 	}
 	public void addPropertyValue(String name, String value) {
-		Element element = getPropertyElement(name);
+		Element element = getPropertyElement(name, false);
 		if (element == null) {
 			Element properties = getElement("Properties");
 			Element newElement = document.createElement("Property");
-			newElement.setAttribute("name", value);
+			newElement.setAttribute("name", name);
 			newElement.setTextContent(value);
 			properties.appendChild(newElement);
 		} else {
@@ -120,7 +133,11 @@ public class ComponentModel {
 	public String getPropertyValue(String name) {
 		return getPropertyElement(name).getTextContent();
 	}	
+
 	private Element getPropertyElement(String name) {
+		return getPropertyElement(name, true);
+	}
+	private Element getPropertyElement(String name, boolean raiseIfNotFound) {
 		NodeList list = getElement("Properties").getElementsByTagName("Property");
 		for (int i = 0; i < list.getLength(); i++) {
 			Element element = (Element) list.item(i);
@@ -128,10 +145,10 @@ public class ComponentModel {
 				return element;
 			}
 		}
-		if (list.getLength() == 0) {
+		if (raiseIfNotFound) {
 			throw new IllegalArgumentException(String.format("Unknown property named '%s'", name));
 		}
-		return (Element) list.item(0);		
+		return null;		
 	}
 
 	boolean isChanged() {
