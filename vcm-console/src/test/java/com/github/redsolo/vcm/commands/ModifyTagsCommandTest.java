@@ -14,6 +14,7 @@ import org.junit.Test;
 import org.junit.rules.TemporaryFolder;
 
 import com.github.redsolo.vcm.ComponentData;
+import com.github.redsolo.vcm.ComponentModel;
 import com.github.redsolo.vcm.Model;
 import com.github.redsolo.vcm.commands.MainConfiguration;
 import com.github.redsolo.vcm.commands.ModifyTagsCommand;
@@ -37,6 +38,34 @@ public class ModifyTagsCommandTest {
 		ComponentData componentData = new Model(file).getComponentData();
 		assertThat(componentData.getTags(), hasItemInArray("newtag"));
 		assertThat(componentData.getTags(), not(hasItemInArray("ACME")));
+	}
+	
+	@Test
+	public void assertTagsAreRemovedInNextGenFile() throws Throwable {
+		File file = TestUtil.getVcmxResourceFile(folder.getRoot());
+		ModifyTagsCommand command = new ModifyTagsCommand();
+		command.setWildcards(Arrays.asList(new String[]{"Idler.vcmx"}));
+		command.setAddTags("newtag");
+		command.setRemoveTags("ACME");
+		command.setComponentRootPath(file.getParentFile().getCanonicalPath());
+		command.execute(new MainConfiguration());
+		
+		ComponentModel model = new Model(file).getComponentModel();
+		assertThat(model.getTags(), hasItemInArray("newtag"));
+		assertThat(model.getTags(), not(hasItemInArray("ACME")));
+	}
+	
+	@Test
+	public void assertTagsAreClearedInNextGenFile() throws Throwable {
+		File file = TestUtil.getVcmxResourceFile(folder.getRoot());
+		ModifyTagsCommand command = new ModifyTagsCommand();
+		command.setWildcards(Arrays.asList(new String[]{"Idler.vcmx"}));
+		command.setClearTags(true);
+		command.setComponentRootPath(file.getParentFile().getCanonicalPath());
+		command.execute(new MainConfiguration());
+		
+		ComponentModel model = new Model(file).getComponentModel();
+		assertThat(model.getTags(), is(emptyArray()));
 	}
 	
 	@Test

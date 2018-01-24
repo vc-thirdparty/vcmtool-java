@@ -13,6 +13,7 @@ import org.apache.log4j.Logger;
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.Parameters;
 import com.github.redsolo.vcm.ComponentData;
+import com.github.redsolo.vcm.ComponentModel;
 import com.github.redsolo.vcm.Model;
 
 @Parameters(commandDescription = "List or modifies tags in meta data (component.dat)")
@@ -36,6 +37,7 @@ public class ModifyTagsCommand extends AbstractModelCollectionCommand {
 	@Override
 	protected void executeModel(Model model) throws IOException, ZipException {
 		ComponentData componentData = model.getComponentData();
+		ComponentModel componentModel = null;
 
 		Set<String> tags = new LinkedHashSet<String>(Arrays.asList(componentData.getTags()));
 		if (removeTags != null) {
@@ -53,8 +55,16 @@ public class ModifyTagsCommand extends AbstractModelCollectionCommand {
 		}
 		String[] newTagsArray = tags.toArray(new String[tags.size()]);
 		if (!Arrays.equals(newTagsArray, componentData.getTags())) {
+			componentModel = model.getComponentModel();
 			componentData.setTags(newTagsArray);
-			model.setComponentData(componentData, !skipRevisionUpdate);
+			if (componentModel != null) {
+				componentModel.setTags(newTagsArray);
+			}
+			boolean wasUpdated = model.setComponentData(componentData, false);
+			wasUpdated = model.setComponentModel(componentModel, false) || wasUpdated;
+			if (wasUpdated && !skipRevisionUpdate) {
+				model.stepRevision();
+			}
 		}
 		log.info(String.format("%s: %s", model.getFile().getName(), StringUtils.join(componentData.getTags(), ",")));
 	}

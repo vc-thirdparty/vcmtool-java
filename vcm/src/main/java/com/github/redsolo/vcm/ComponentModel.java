@@ -1,5 +1,6 @@
 package com.github.redsolo.vcm;
 
+import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
@@ -22,6 +23,13 @@ public class ComponentModel {
 	}
 	public void setVcid(String vcid) {
 		setPropertyValue("VCID", vcid);
+	}
+	
+	public String[] getTags() {
+		return StringUtils.split(getPropertyValue("Tags"), ';');
+	}
+	public void setTags(String[] tags) {
+		setPropertyValue("Tags", StringUtils.join(tags, ';'));
 	}
 	
 	public int getRevision() {
@@ -81,6 +89,26 @@ public class ComponentModel {
 			getPropertyElement(name).setTextContent(value);
 			setChanged(true);
 		}
+	}
+	public void removePropertyValue(String name) {
+		Element element = getPropertyElement(name);
+		if (element != null) {
+			element.getParentNode().removeChild(element);
+			setChanged(true);
+		}
+	}
+	public void addPropertyValue(String name, String value) {
+		Element element = getPropertyElement(name);
+		if (element == null) {
+			Element properties = getElement("Properties");
+			Element newElement = document.createElement("Property");
+			newElement.setAttribute("name", value);
+			newElement.setTextContent(value);
+			properties.appendChild(newElement);
+		} else {
+			element.setTextContent(value);			
+		}
+		setChanged(true);
 	}
 	public String getPropertyValue(String name) {
 		return getPropertyElement(name).getTextContent();
